@@ -1,4 +1,36 @@
 {
   "version": 1,
-  "genes": []
+  "genes": [
+    {
+      "type": "Gene",
+      "schema_version": "1.8.0",
+      "id": "gene_gep_events_scaffold",
+      "summary": "Initialize and validate the tracked GEP events.jsonl append log",
+      "category": "innovate",
+      "signals_match": [
+        "user_feature_request",
+        "user_feature_request:| `assets/gep/events.jsonl` | 进化事件追加日志 |",
+        "user_improvement_suggestion"
+      ],
+      "preconditions": [
+        "assets/gep/events.jsonl exists or can be created"
+      ],
+      "strategy": [
+        "Add a minimal EvolutionEvent scaffold line to assets/gep/events.jsonl",
+        "Keep changes small and match existing JSON/JSONL style",
+        "Run node scripts/validate-gep-events.js to verify the log format"
+      ],
+      "constraints": {
+        "max_files": 4,
+        "forbidden_paths": [
+          ".git",
+          "node_modules",
+          "SKILL.md"
+        ]
+      },
+      "validation": [
+        "node scripts/validate-gep-events.js"
+      ]
+    }
+  ]
 }
