@@ -1,0 +1,8 @@
+# Evolver runtime (local-only)
+memory/
+.evolver/
+logs/
+.evomap_device_id
+.evomap_node_id
+evolver.pid
+.evolver.lock
