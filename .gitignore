@@ -1,5 +1,6 @@
 # Evolver runtime (local-only)
-memory/
+memory/*
+!memory/MEMORY.md
 .evolver/
 logs/
 .evomap_device_id
