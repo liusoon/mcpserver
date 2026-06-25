@@ -27,11 +27,19 @@ const capsules = Array.isArray(capsulesDoc.capsules) ? capsulesDoc.capsules : []
 
 const eventsPath = path.join(GEP_DIR, 'events.jsonl');
 let eventCount = 0;
+let latestEventId = null;
 if (fs.existsSync(eventsPath)) {
-  eventCount = fs.readFileSync(eventsPath, 'utf8')
+  const eventLines = fs.readFileSync(eventsPath, 'utf8')
     .split(/\r?\n/)
-    .filter((line) => line.trim().length > 0)
-    .length;
+    .filter((line) => line.trim().length > 0);
+  eventCount = eventLines.length;
+  if (eventCount > 0) {
+    try {
+      latestEventId = JSON.parse(eventLines[eventCount - 1]).id || null;
+    } catch (_err) {
+      latestEventId = null;
+    }
+  }
 }
 
 const summary = {
@@ -48,6 +56,7 @@ const summary = {
     trigger: c.trigger || [],
   })),
   counts: { genes: genes.length, capsules: capsules.length, events: eventCount },
+  latest_event_id: latestEventId,
 };
 
 console.log(JSON.stringify(summary, null, 2));
