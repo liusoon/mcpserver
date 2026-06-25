@@ -48,7 +48,7 @@
         "Solidify: record EvolutionEvent with intent=innovate, create new Gene if pattern is novel, create Capsule on success"
       ],
       "validation": [
-        "node -e \"if(!require('crypto'))throw new Error('validation failed')\""
+        "node scripts/list-gep-assets.js"
       ],
       "constraints": {
         "max_files": 25,
@@ -87,7 +87,7 @@
         "Solidify knowledge: append EvolutionEvent, update Gene/Capsule store"
       ],
       "validation": [
-        "node -e \"if(!require('crypto'))throw new Error('validation failed')\""
+        "node scripts/list-gep-assets.js"
       ],
       "constraints": {
         "max_files": 20,
