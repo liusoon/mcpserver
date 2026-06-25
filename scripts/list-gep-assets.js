@@ -28,6 +28,7 @@ const capsules = Array.isArray(capsulesDoc.capsules) ? capsulesDoc.capsules : []
 const eventsPath = path.join(GEP_DIR, 'events.jsonl');
 let eventCount = 0;
 let latestEventId = null;
+let latestOutcomeScore = null;
 let eventChain = [];
 if (fs.existsSync(eventsPath)) {
   const eventLines = fs.readFileSync(eventsPath, 'utf8')
@@ -44,9 +45,14 @@ if (fs.existsSync(eventsPath)) {
   }).filter(Boolean);
   if (eventCount > 0) {
     try {
-      latestEventId = JSON.parse(eventLines[eventCount - 1]).id || null;
+      const latest = JSON.parse(eventLines[eventCount - 1]);
+      latestEventId = latest.id || null;
+      latestOutcomeScore = latest.outcome && latest.outcome.score != null
+        ? latest.outcome.score
+        : null;
     } catch (_err) {
       latestEventId = null;
+      latestOutcomeScore = null;
     }
   }
 }
@@ -66,6 +72,7 @@ const summary = {
   })),
   counts: { genes: genes.length, capsules: capsules.length, events: eventCount },
   latest_event_id: latestEventId,
+  latest_outcome_score: latestOutcomeScore,
   event_chain: eventChain,
 };
 
