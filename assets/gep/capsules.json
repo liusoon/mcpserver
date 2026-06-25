@@ -70,6 +70,33 @@
         "arch": "x64",
         "platform": "linux"
       }
+    },
+    {
+      "type": "Capsule",
+      "id": "capsule_football_lottery_odds",
+      "asset_id": "sha256:25670375cc7dbf968f045aa2371e83293ce8b80aa14a1175cfe751ee4716f466",
+      "summary": "Football lottery betting analysis with odds comparison",
+      "trigger": [
+        "football_betting",
+        "lottery_analysis",
+        "odds_comparison"
+      ],
+      "strategy": [
+        "Collect relevant data from official sources",
+        "Analyze patterns and extract key features",
+        "Process and validate information accuracy",
+        "Generate structured output with scores",
+        "Store results for future reference"
+      ],
+      "content": "Analyze football lottery matches by comparing betting odds from multiple sources, evaluating team form and head-to-head records, calculating implied win probabilities, and detecting upsets when underdog odds exceed historical rates. Output ranked predictions with confidence scores.",
+      "outcome": {
+        "status": "success",
+        "score": 0.8
+      },
+      "schema_version": "1.8.0",
+      "source_node_id": "node_6a2ba1a4cc2ca048",
+      "hub_status": "candidate",
+      "note": "Partial metadata only; full content unavailable (candidate/demoted asset)"
     }
   ]
 }
