@@ -30,6 +30,7 @@ let eventCount = 0;
 let latestEventId = null;
 let latestOutcomeScore = null;
 let eventChain = [];
+let intentCounts = {};
 if (fs.existsSync(eventsPath)) {
   const eventLines = fs.readFileSync(eventsPath, 'utf8')
     .split(/\r?\n/)
@@ -38,11 +39,26 @@ if (fs.existsSync(eventsPath)) {
   eventChain = eventLines.slice(-5).map((line) => {
     try {
       const evt = JSON.parse(line);
+      if (evt.intent) {
+        intentCounts[evt.intent] = (intentCounts[evt.intent] || 0) + 1;
+      }
       return { id: evt.id, parent: evt.parent || null, intent: evt.intent || null };
     } catch (_err) {
       return null;
     }
   }).filter(Boolean);
+  if (eventCount > 5) {
+    eventLines.slice(0, eventCount - 5).forEach((line) => {
+      try {
+        const evt = JSON.parse(line);
+        if (evt.intent) {
+          intentCounts[evt.intent] = (intentCounts[evt.intent] || 0) + 1;
+        }
+      } catch (_err) {
+        /* skip malformed lines */
+      }
+    });
+  }
   if (eventCount > 0) {
     try {
       const latest = JSON.parse(eventLines[eventCount - 1]);
@@ -73,6 +89,7 @@ const summary = {
   counts: { genes: genes.length, capsules: capsules.length, events: eventCount },
   latest_event_id: latestEventId,
   latest_outcome_score: latestOutcomeScore,
+  intent_counts: intentCounts,
   event_chain: eventChain,
 };
 
