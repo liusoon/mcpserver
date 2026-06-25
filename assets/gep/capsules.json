@@ -1,4 +1,75 @@
 {
   "version": 1,
-  "capsules": []
+  "capsules": [
+    {
+      "id": "capsule_synth_gene_gep_innovate_from_opportunity",
+      "gene": "sha256:9894a0a3ff29b0aecc8576caec274f97598cb11216f753d710f443cb653f189b",
+      "type": "Capsule",
+      "content": "This capsule validates the innovate strategy from gene_gep_innovate_from_opportunity. Signals: user_feature_request, user_improvement_suggestion, perf_bottleneck, capability_gap, stable_success_plateau, external_opportunity. Strategy steps: 7. Applied with minimal blast radius and verified.",
+      "outcome": {
+        "score": 0.75,
+        "status": "success"
+      },
+      "summary": "Validated application of gene_gep_innovate_from_opportunity (innovate)",
+      "trigger": [
+        "user_feature_request",
+        "user_improvement_suggestion",
+        "perf_bottleneck",
+        "capability_gap",
+        "stable_success_plateau",
+        "external_opportunity"
+      ],
+      "asset_id": "sha256:4d871eaad74135c0ee7cde05af7a515b28e739c5a3d4deb2c7f4643ebec842d5",
+      "strategy": [
+        "Extract opportunity signals and identify the specific user need or system gap",
+        "Search existing Genes and Capsules for partial matches (avoid reinventing)",
+        "Design a minimal, testable implementation plan (prefer small increments)"
+      ],
+      "confidence": 0.75,
+      "blast_radius": {
+        "files": 5,
+        "lines": 50
+      },
+      "schema_version": "1.5.0",
+      "success_streak": 2,
+      "env_fingerprint": {
+        "arch": "x64",
+        "platform": "linux"
+      }
+    },
+    {
+      "id": "capsule_synth_gene_gep_repair_from_errors",
+      "gene": "sha256:c9ed1efef4529b9d43ac5738c27bb76735decf483aad5ddcabb974f53a252ae2",
+      "type": "Capsule",
+      "content": "This capsule validates the repair strategy from gene_gep_repair_from_errors. Signals: error, exception, failed, unstable. Strategy steps: 6. Applied with minimal blast radius and verified.",
+      "outcome": {
+        "score": 0.75,
+        "status": "success"
+      },
+      "summary": "Validated application of gene_gep_repair_from_errors (repair)",
+      "trigger": [
+        "error",
+        "exception",
+        "failed",
+        "unstable"
+      ],
+      "asset_id": "sha256:7e4120afb308075ded85b67eecf5c06bc870d4fce70d3d24139e91577612e462",
+      "strategy": [
+        "Extract structured signals from logs and user instructions",
+        "Select an existing Gene by signals match (no improvisation)",
+        "Estimate blast radius (files, lines) before editing"
+      ],
+      "confidence": 0.75,
+      "blast_radius": {
+        "files": 5,
+        "lines": 50
+      },
+      "schema_version": "1.5.0",
+      "success_streak": 2,
+      "env_fingerprint": {
+        "arch": "x64",
+        "platform": "linux"
+      }
+    }
+  ]
 }
