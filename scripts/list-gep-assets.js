@@ -31,47 +31,52 @@ let latestEventId = null;
 let latestOutcomeScore = null;
 let eventChain = [];
 let intentCounts = {};
+let genesUsedCounts = {};
+let outcomeScores = [];
 if (fs.existsSync(eventsPath)) {
   const eventLines = fs.readFileSync(eventsPath, 'utf8')
     .split(/\r?\n/)
     .filter((line) => line.trim().length > 0);
   eventCount = eventLines.length;
-  eventChain = eventLines.slice(-5).map((line) => {
+  const parsedEvents = eventLines.map((line) => {
     try {
-      const evt = JSON.parse(line);
-      if (evt.intent) {
-        intentCounts[evt.intent] = (intentCounts[evt.intent] || 0) + 1;
-      }
-      return { id: evt.id, parent: evt.parent || null, intent: evt.intent || null };
+      return JSON.parse(line);
     } catch (_err) {
       return null;
     }
   }).filter(Boolean);
-  if (eventCount > 5) {
-    eventLines.slice(0, eventCount - 5).forEach((line) => {
-      try {
-        const evt = JSON.parse(line);
-        if (evt.intent) {
-          intentCounts[evt.intent] = (intentCounts[evt.intent] || 0) + 1;
-        }
-      } catch (_err) {
-        /* skip malformed lines */
-      }
-    });
-  }
-  if (eventCount > 0) {
-    try {
-      const latest = JSON.parse(eventLines[eventCount - 1]);
-      latestEventId = latest.id || null;
-      latestOutcomeScore = latest.outcome && latest.outcome.score != null
-        ? latest.outcome.score
-        : null;
-    } catch (_err) {
-      latestEventId = null;
-      latestOutcomeScore = null;
+
+  parsedEvents.forEach((evt) => {
+    if (evt.intent) {
+      intentCounts[evt.intent] = (intentCounts[evt.intent] || 0) + 1;
     }
+    if (Array.isArray(evt.genes_used)) {
+      evt.genes_used.forEach((geneId) => {
+        genesUsedCounts[geneId] = (genesUsedCounts[geneId] || 0) + 1;
+      });
+    }
+    if (evt.outcome && evt.outcome.score != null) {
+      outcomeScores.push(evt.outcome.score);
+    }
+  });
+
+  eventChain = parsedEvents.slice(-5).map((evt) => ({
+    id: evt.id,
+    parent: evt.parent || null,
+    intent: evt.intent || null,
+  }));
+  if (parsedEvents.length > 0) {
+    const latest = parsedEvents[parsedEvents.length - 1];
+    latestEventId = latest.id || null;
+    latestOutcomeScore = latest.outcome && latest.outcome.score != null
+      ? latest.outcome.score
+      : null;
   }
 }
+
+const averageOutcomeScore = outcomeScores.length > 0
+  ? Number((outcomeScores.reduce((a, b) => a + b, 0) / outcomeScores.length).toFixed(3))
+  : null;
 
 const summary = {
   genes: genes.map((g) => ({
@@ -89,7 +94,9 @@ const summary = {
   counts: { genes: genes.length, capsules: capsules.length, events: eventCount },
   latest_event_id: latestEventId,
   latest_outcome_score: latestOutcomeScore,
+  average_outcome_score: averageOutcomeScore,
   intent_counts: intentCounts,
+  genes_used_counts: genesUsedCounts,
   event_chain: eventChain,
 };
 
